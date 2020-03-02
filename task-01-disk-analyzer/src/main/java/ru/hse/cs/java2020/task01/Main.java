@@ -1,5 +1,7 @@
 package ru.hse.cs.java2020.task01;
 
+
+//Directories and their sizes are not taken into account
 import java.io.File;
 //import java.io.FilenameFilter;
 import java.util.ArrayList;
@@ -132,7 +134,7 @@ public class Main {
         }
         long maxPathLength = Collections.max(topFiles, new PathComparator()).getPath().length();
         long maxSize = Integer.toString((int) (Collections.max(topFiles,
-                new FileComparator()).length() / measureSize)).length();
+                new FileComparator()).length() / measureSize)).length()
         System.out.println("\n\n_ _ _ _ _ _ _ _ _ _BIGGEST FILES_ _ _ _ _ _ _ _ _ _\n");
         System.out.printf("%-6s | " + "%-" + maxPathLength + "s | %-" + (maxSize + strBias) + "s \n",
                 "Number", "Path", "Size");
