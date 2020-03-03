@@ -24,7 +24,7 @@ public class Main {
 
     static class InfoComparator implements Comparator<FolderInfo> {
         public int compare(FolderInfo a, FolderInfo b) {
-            return -1 * Long.compare(a.size, b.size);
+            return Long.compare(a.size, b.size);
         }
     }
 
@@ -92,6 +92,8 @@ public class Main {
                     res.topFiles.poll();
                     res.topFiles.add(file);
                 }
+                res.dirInfo.add(new FolderInfo(file));
+                res.dirInfo.get(res.dirInfo.size() - 1).size = file.length();
             }
         }
 
@@ -109,7 +111,7 @@ public class Main {
             FolderInfo info = res.dirInfo.get(i);
             topDirs.add(info.path.getPath().substring(arg.length()).length());
         }
-        res.dirInfo.sort(new InfoComparator());
+        res.dirInfo.sort(new InfoComparator().reversed());
         int maxPath = Collections.max(topDirs);
         System.out.printf("%-10s | %-" + maxPath + "s | %-18s | %-12s | %-15s \n",
                 "Number", "Path", "Total size", "Percentage", "Number of files");
