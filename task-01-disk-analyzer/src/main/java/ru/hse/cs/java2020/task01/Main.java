@@ -4,13 +4,7 @@ package ru.hse.cs.java2020.task01;
 //Directories and their sizes are not taken into account
 import java.io.File;
 //import java.io.FilenameFilter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.*;
 
 public class Main {
     private static final int TOPSIZE = 5;
@@ -60,7 +54,7 @@ public class Main {
 
 
     private static Result findDirInfo(File directory) {
-        Queue<File> fileQueue = new PriorityQueue<>();
+        ArrayDeque<File> fileQueue = new ArrayDeque<>();
         int i = 0;
         Result res = new Result();
 
