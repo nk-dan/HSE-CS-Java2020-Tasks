@@ -4,7 +4,14 @@ package ru.hse.cs.java2020.task01;
 //Directories and their sizes are not taken into account
 import java.io.File;
 //import java.io.FilenameFilter;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 public class Main {
     private static final int TOPSIZE = 5;
