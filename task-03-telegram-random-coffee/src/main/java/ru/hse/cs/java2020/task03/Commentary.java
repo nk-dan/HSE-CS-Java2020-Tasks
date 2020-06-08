@@ -9,15 +9,12 @@ public class Commentary {
         this.comment = text;
     }
 
-
     public String getAuthor() {
         return author;
-
     }
 
     public String getComment() {
         return comment;
-
     }
 }
 

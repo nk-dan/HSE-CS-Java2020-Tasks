@@ -8,6 +8,7 @@ public class Main {
         TrackerClient trackerClient = TrackerClient.getTrackerClient();
         TelegramBot bot = new TelegramBot("1238312089:AAFcq4-CIX4yc_uemyWBVbdYzTJuWmRyeNY\n");
         Bot trackerBot = new Bot(bot, db, trackerClient);
+        Runtime.getRuntime().addShutdownHook(new Thread(db::disconnect));
         trackerBot.run();
     }
 }

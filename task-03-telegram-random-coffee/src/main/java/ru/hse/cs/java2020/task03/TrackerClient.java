@@ -37,11 +37,11 @@ public class TrackerClient {
         JSONObject requestJSON = new JSONObject();
         requestJSON.put("summary", name);
         requestJSON.put("description", description);
-        requestJSON.put("queue", new JSONObject().put("id", queueID));
+        requestJSON.put("queue", queueID);
         user.ifPresent(s -> requestJSON.put("assignee", s));
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://api.tracker.yandex.net/v2/issues?"))
-                .headers("Authorization", "OAuth " + oauthToken, "X-Org-Id", orgID)
+                .headers("Content-type", "application/json" ,"Authorization", "OAuth " + oauthToken, "X-Org-Id", orgID)
                 .POST(HttpRequest.BodyPublishers.ofString(requestJSON.toString()))
                 .build();
         try {
@@ -60,11 +60,12 @@ public class TrackerClient {
         }
     }
 
-    ArrayList<String> findTaskByKey(String oauthToken, String orgID, String user) throws ClientErr {
+    ArrayList<String> findMyTasks(String oauthToken, String orgID, String user, String pageNum) throws ClientErr {
         JSONObject request = new JSONObject();
         request.put("filter", new JSONObject().put("assignee", user));
         HttpRequest httpRequest = HttpRequest.newBuilder()
-                .uri(URI.create("https://api.tracker.yandex.net/v2/issues/_search?order=+updatedAt"))
+                .uri(URI.create("https://api.tracker.yandex.net/v2/issues/_search?order=+updatedAt&perPage=5&page="
+                        + pageNum))
                 .headers("Authorization", "OAuth " + oauthToken, "X-Org-Id", orgID)
                 .POST(HttpRequest.BodyPublishers.ofString(request.toString()))
                 .build();

@@ -51,7 +51,7 @@ public class DataBase {
     }
 
     Optional<UserData> get(long chatId) {
-        String sql = "SELECT oAuth, orgId, login FROM public.DB WHERE chatId = '" + chatId + "'";
+        String sql = "SELECT oAuth, orgId, login FROM DB WHERE chatId = '" + chatId + "'";
         try {
             Statement statement = connection.createStatement();
             ResultSet result = statement.executeQuery(sql);

@@ -87,11 +87,10 @@ public class Bot {
     public void getTask(long chatId, String[] request) {
         Optional<UserData> userInfo = db.get(chatId);
         if (userInfo.isEmpty()) {
-            sendMessage(chatId, "hi!");
             authError(chatId);
             return;
         }
-        if (request.length < 2) {
+        if (request.length != 2) {
             sendHelp(chatId);
         } else {
             try {
@@ -100,11 +99,11 @@ public class Bot {
                         + "\nDescription: " + task.getDescription() + "\nAuthor: " + task.getAuthor());
                 Optional<String> assignedTo = task.getExecutor();
                 assignedTo.ifPresent(s -> sendMessage(chatId, "Assigned to: " + s));
-                ArrayList<String> followers = task.getObservers();
-                if (followers.size() > 0) {
+                ArrayList<String> observers = task.getObservers();
+                if (observers.size() > 0) {
                     sendMessage(chatId, "Observer list:");
-                    for (var follower : followers) {
-                        sendMessage(chatId, follower);
+                    for (var obs : observers) {
+                        sendMessage(chatId, obs);
                     }
                 }
                 ArrayList<Commentary> comments = task.getComments();
@@ -156,13 +155,14 @@ public class Bot {
             return;
         }
         try {
-            ArrayList<String> tasks = client.findTaskByKey(userInfo.get().getToken(), userInfo.get().getOrg(),
-                    userInfo.get().getLogin());
-            int numTasks = 5;
+            String pageNum = "1";
             if (request.length > 1) {
-                numTasks = Integer.parseInt(request[1]);
+                pageNum = request[1];
             }
-            for (int i = 0; i != numTasks && i != tasks.size(); ++i) {
+            ArrayList<String> tasks = client.findMyTasks(userInfo.get().getToken(), userInfo.get().getOrg(),
+                    userInfo.get().getLogin(), pageNum);
+
+            for (int i = 0; i != tasks.size(); ++i) {
                 sendMessage(chatId, tasks.get(i));
             }
         } catch (ClientErr exc) {
@@ -193,8 +193,8 @@ public class Bot {
     }
 
     public void sendHelp(long chatId) {
-        sendMessage(chatId, "You can interact with Yandex.Tracker (https://yandex.ru/tracker/) using this bot." +
-                "To get oAuth token visit https://yandex.ru/dev/connect/tracker/ .\n\n"
+        sendMessage(chatId, "You can interact with Yandex.Tracker (https://yandex.ru/tracker/) using this bot."
+                + "To get oAuth token visit https://yandex.ru/dev/connect/tracker/ .\n\n"
                 + "List of methods:\n"
                 + "authorization - /start <oAuth token> # <X-Org-Id> # <login>\n"
                 + "adding new task - /createTask <name> # <description> # <queueId>\n"
